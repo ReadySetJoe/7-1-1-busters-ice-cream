@@ -16,6 +16,7 @@ class IceCream(models.Model):
       ('seasonal','Seasonal'),
       ])
     date_churned = models.DateTimeField('date published',default=timezone.now())
+    score = models.IntegerField(default=0)
 
     def __str__(self):
       return self.flavor

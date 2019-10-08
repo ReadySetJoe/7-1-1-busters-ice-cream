@@ -1,11 +1,12 @@
+{% load static %}
+
 <h1> Welcome to Buster's Ice Cream</h1>
 <nav>
-  <a href="{% url 'menu:index' %}">HOME</a>
-  <a href="{% url 'menu:featured' %}">FEATURED</a>
-  <a href="{% url 'menu:daily' %}">DAILY</a>
-  <a href="{% url 'menu:weekly' %}">WEEKLY</a>
-  <a href="{% url 'menu:seasonal' %}">SEASONAL</a>
-        
+  <a href="/menu/home">HOME</a>
+  <a href="/menu/featured/">FEATURED</a>
+  <a href="/menu/daily/">DAILY</a>
+  <a href="/menu/weekly/">WEEKLY</a>
+  <a href="/menu/seasonal/">SEASONAL</a>
 </nav>
 {% if freshest_list %}
     <ul>
@@ -14,7 +15,14 @@
           Hard coded url version
           <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li> 
         -->
-        <li><a href="{% url 'menu:detail' icecream.id %}">{{ icecream.flavor }}</a></li>
+        <li>
+          <a href="{% url 'menu:detail' icecream.id %}">{{ icecream.flavor }}</a> 
+          <!-- <form action='actionUrl' method='GET'>
+            <button type='submit'> sort me</button>
+          </form> -->
+          <a href="upvote/{{ icecream.id }}">+</a>{{ icecream.score }}
+          <a href="downvote/{{ icecream.id }}">-</a>
+        </li>
     {% endfor %}
     </ul>
 {% else %}

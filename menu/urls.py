@@ -4,10 +4,8 @@ from . import views
 
 app_name = 'menu'
 urlpatterns = [
-    path('', views.index, name='index'),
     path('<int:icecream_id>/', views.detail, name='detail'),
-    path('featured/', views.featured, name='featured'),
-    path('daily/', views.daily, name='daily'),
-    path('weekly/', views.weekly, name='weekly'),
-    path('seasonal/',views.seasonal, name='seasonal'),
+    path('<menu_filter>/', views.index, name='index'),
+    path('<menu_filter>/upvote/<int:icecream_id>/', views.upvote, name='upvote'),
+    path('<menu_filter>/downvote/<int:icecream_id>/', views.downvote, name='downvote'),
 ]
