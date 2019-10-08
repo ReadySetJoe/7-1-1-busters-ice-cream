@@ -28,10 +28,10 @@ def upvote(request, icecream_id, menu_filter='home'):
     ic = get_object_or_404(IceCream, pk=icecream_id)
     ic.score += 1
     ic.save()
-    return index(request, menu_filter)
+    return HttpResponseRedirect(reverse('menu:index', args=(menu_filter,)))
 
 def downvote(request, icecream_id, menu_filter='home'):
     ic = get_object_or_404(IceCream, pk=icecream_id)
     ic.score -= 1
     ic.save()
-    return index(request, menu_filter)
+    return HttpResponseRedirect(reverse('menu:index', args=(menu_filter,)))
