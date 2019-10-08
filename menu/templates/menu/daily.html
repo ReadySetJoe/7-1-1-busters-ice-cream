@@ -1,0 +1,22 @@
+<h1> Welcome to Buster's Ice Cream</h1>
+<nav>
+  <a href="{% url 'menu:index' %}">HOME</a>
+  <a href="{% url 'menu:featured' %}">FEATURED</a>
+  <a href="{% url 'menu:daily' %}">DAILY</a>
+  <a href="{% url 'menu:weekly' %}">WEEKLY</a>
+  <a href="{% url 'menu:seasonal' %}">SEASONAL</a>
+        
+</nav>
+{% if freshest_list %}
+    <ul>
+    {% for icecream in freshest_list %}
+        <!-- 
+          Hard coded url version
+          <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li> 
+        -->
+        <li><a href="{% url 'menu:detail' icecream.id %}">{{ icecream.flavor }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
