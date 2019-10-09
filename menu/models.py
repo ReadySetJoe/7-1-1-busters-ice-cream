@@ -26,4 +26,4 @@ class IceCream(models.Model):
       return self.date_churned >= timezone.now() - datetime.timedelta(days=0)
 
     def get_absolute_url(self):
-      return reverse('menu:index')
+      return reverse('menu:home',args=('home',))

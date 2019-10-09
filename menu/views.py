@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template import loader
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import generic
 
 from .models import IceCream
@@ -46,3 +46,8 @@ class IndexView(generic.ListView):
     template_name = 'menu/index.html'
     def get_queryset(self):
         return IceCream.objects.all()
+
+class DeleteView(generic.DeleteView):
+    template_name = 'menu/delete.html'
+    model = IceCream
+    success_url = reverse_lazy('menu:home',args=('home',))
