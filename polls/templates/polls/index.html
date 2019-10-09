@@ -1,6 +1,6 @@
-{% if latest_question_list %}
+{% if question_list %}
     <ul>
-    {% for question in latest_question_list %}
+    {% for question in question_list %}
         <!-- 
           Hard coded url version
           <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li> 

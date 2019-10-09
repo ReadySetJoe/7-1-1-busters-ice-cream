@@ -1,6 +1,7 @@
 import datetime
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 
 
 class IceCream(models.Model):
@@ -23,3 +24,6 @@ class IceCream(models.Model):
     
     def isFresh(self):
       return self.date_churned >= timezone.now() - datetime.timedelta(days=0)
+
+    def get_absolute_url(self):
+      return reverse('menu:index')

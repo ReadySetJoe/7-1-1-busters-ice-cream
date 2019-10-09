@@ -1,0 +1,8 @@
+<!-- { % extends 'polls/base.html' %} -->
+<!-- {% block content %} -->
+<form method='POST'>{% csrf_token %}
+  <!-- { % csrf_token % } -->
+  {{form.as_p}}
+  <button>Submit</button>
+</form>
+<!-- {% endblock content %} -->

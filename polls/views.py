@@ -1,45 +1,44 @@
-from django.shortcuts import render
-from django.http import Http404
-from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render
+from django.http import Http404,HttpResponse
 from django.template import loader
+from django.views import generic
+from django.urls import reverse
 
 from .models import Question
 
-def index(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    template = loader.get_template('polls/index.html')
-    context = {
-        'latest_question_list': latest_question_list,
-    }
-    return HttpResponse(template.render(context, request))
-
-## using the render() method
-# from django.http import HttpResponse
-
-# from .models import Question
-
 # def index(request):
-#     latest_question_list = Question.objects.order_by('-pub_date')[:5]
-#     context = {'latest_question_list': latest_question_list}
+#     question_list = Question.objects.order_by('-pub_date')
+#     context = {'question_list': question_list}
 #     return render(request, 'polls/index.html', context)
 
-def detail(request, question_id):
-    try:
-        question = Question.objects.get(pk=question_id)
-    except Question.DoesNotExist:
-        raise Http404("Question does not exist")
-    return render(request, 'polls/detail.html', {'question': question})
+class IndexView(generic.ListView):
+    template_name = 'polls/index.html'
+    # by default the context object is named object_list
+    context_object_name = 'question_list'
 
-## Using get_object_or_404 shortcut
-# from django.shortcuts import get_object_or_404, render
+    def get_queryset(self):
+        return Question.objects.all()
 
-# def detail(request, question_id):
-#     question = get_object_or_404(Question, pk=question_id)
-#     return render(request, 'polls/detail.html', {'question': question})
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = 'polls/detail.html'
 
-def results(request, question_id):
-    response = "You're looking at the results of question %s."
-    return HttpResponse(response % question_id)
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = 'polls/results.html'
 
 def vote(request, question_id):
-    return HttpResponse("You're voting on question %s." % question_id)
+    question = get_object_or_404(Question,pk=question_id)
+    selected_choice = question.choice_set.get(pk=request.POST['choice'])
+
+    selected_choice.votes+=1
+    selected_choice.save()
+    
+    return HttpResponse(reverse('polls:results', args=(question.id,)))
+
+class CreateView(generic.CreateView):
+    model = Question
+    fields = 'question_text',
+    template_name = 'polls/create.html'
+    
+

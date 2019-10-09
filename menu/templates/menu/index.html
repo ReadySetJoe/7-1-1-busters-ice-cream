@@ -2,29 +2,11 @@
 
 <h1> Welcome to Buster's Ice Cream</h1>
 <nav>
-  <a href="/menu/home">HOME</a>
+  <a href="/menu/home">ALL</a>
   <a href="/menu/featured/">FEATURED</a>
   <a href="/menu/daily/">DAILY</a>
   <a href="/menu/weekly/">WEEKLY</a>
   <a href="/menu/seasonal/">SEASONAL</a>
 </nav>
-{% if freshest_list %}
-    <ul>
-    {% for icecream in freshest_list %}
-        <!-- 
-          Hard coded url version
-          <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li> 
-        -->
-        <li>
-          <a href="{% url 'menu:detail' icecream.id %}">{{ icecream.flavor }}</a> 
-          <!-- <form action='actionUrl' method='GET'>
-            <button type='submit'> sort me</button>
-          </form> -->
-          <a href="upvote/{{ icecream.id }}">+</a>{{ icecream.score }}
-          <a href="downvote/{{ icecream.id }}">-</a>
-        </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No polls are available.</p>
-{% endif %}
+<h2> Select a menu from above or add a new flavor below!</h2>
+<a href="{% url 'menu:create' %}">Add a new flavor!</a> 
