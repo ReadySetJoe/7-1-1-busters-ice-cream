@@ -11,15 +11,8 @@
 {% if freshest_list %}
     <ul>
     {% for icecream in freshest_list %}
-        <!-- 
-          Hard coded url version
-          <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li> 
-        -->
         <li>
           <a href="{% url 'menu:detail' icecream.id %}">{{ icecream.flavor }}</a> 
-          <!-- <form action='actionUrl' method='GET'>
-            <button type='submit'> sort me</button>
-          </form> -->
           <a href="upvote/{{ icecream.id }}">+</a>{{ icecream.score }}<a href="downvote/{{ icecream.id }}">-</a>
           (<a href="{% url 'menu:delete' icecream.id%}">x</a>)
         </li>
