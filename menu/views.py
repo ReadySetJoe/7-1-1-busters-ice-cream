@@ -1,8 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse, reverse_lazy
 from django.views import generic
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import user_passes_test
 
 from .models import IceCream
 
@@ -37,10 +39,16 @@ def downvote(request, icecream_id, menu_filter='home'):
     ic.save()
     return HttpResponseRedirect(reverse('menu:home', args=(menu_filter,)))
 
-class CreateView(generic.CreateView):
+class CreateView(UserPassesTestMixin, generic.CreateView):
     model = IceCream
     fields = 'flavor','featured','base','available',
     template_name = 'menu/create.html'
+
+    def test_func(self):
+      return self.request.user.is_superuser
+
+    def handle_no_permission(self):
+      return redirect('menu:index')
     
 class IndexView(generic.ListView):
     template_name = 'menu/index.html'
@@ -51,3 +59,6 @@ class DeleteView(generic.DeleteView):
     template_name = 'menu/delete.html'
     model = IceCream
     success_url = reverse_lazy('menu:home',args=('home',))
+
+def is_superuser_check(user):
+  return user.is_superuser

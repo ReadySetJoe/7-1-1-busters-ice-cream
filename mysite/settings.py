@@ -25,12 +25,13 @@ SECRET_KEY = 'b+u^x3dp=aoedd$*vz#4ry41uwm7%qr^)g@74af0alvhqn4f8$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'accounts.apps.AccountsConfig',
     'polls.apps.PollsConfig',
     'menu.apps.MenuConfig',
     'django.contrib.admin',
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -120,3 +122,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+LOGIN_REDIRECT_URL = '/menu/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
