@@ -5,8 +5,13 @@ from django.urls import reverse, reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth import logout as logout_
+
 
 from .models import IceCream
+
+def is_superuser_check(user):
+  return user.is_superuser
 
 def home(request, menu_filter=''):
   if menu_filter == 'home':
@@ -48,17 +53,24 @@ class CreateView(UserPassesTestMixin, generic.CreateView):
       return self.request.user.is_superuser
 
     def handle_no_permission(self):
-      return redirect('menu:index')
+      return redirect('menu:home')
     
 class IndexView(generic.ListView):
     template_name = 'menu/index.html'
     def get_queryset(self):
         return IceCream.objects.all()
 
-class DeleteView(generic.DeleteView):
-    template_name = 'menu/delete.html'
-    model = IceCream
-    success_url = reverse_lazy('menu:home',args=('home',))
+@user_passes_test(is_superuser_check)
+def delete(request, icecream_id, menu_filter='home'):
+  ic = get_object_or_404(IceCream, pk=icecream_id)
+  ic.delete()
+  return HttpResponseRedirect(reverse_lazy('menu:home',args=('home',)))
 
-def is_superuser_check(user):
-  return user.is_superuser
+# class DeleteView(generic.DeleteView):
+#     template_name = 'menu/delete.html'
+#     model = IceCream
+#     success_url = reverse_lazy('menu:home',args=('home',))
+
+def logout(request):
+    logout_(request)
+    # return HttpResponseRedirect(reverse_lazy('menu:home',args=('home',)))

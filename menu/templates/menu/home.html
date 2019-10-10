@@ -1,8 +1,14 @@
 {% load static %}
 
 <h1> Welcome to Buster's Ice Cream</h1>
+{% if request.user.is_authenticated %}
+<h3>Welcome {{user.username}}!</h3>
+{% else %}
+<div><a href="{% url 'login'%}">Login</a> or <a href="{% url 'accounts:signup' %}">Sign Up</a></div>
+{% endif %}
+<br>
 <nav>
-  <a href="/menu/home">HOME</a>
+  <a href="/menu/home">ALL</a>
   <a href="/menu/featured/">FEATURED</a>
   <a href="/menu/daily/">DAILY</a>
   <a href="/menu/weekly/">WEEKLY</a>
@@ -21,6 +27,12 @@
 {% else %}
     <p>No ice cream is available.</p>
 {% endif %}
+{% if is_superuser_check %}
 <div>
   <a href="{% url 'menu:create' %}">Add a new flavor!</a> 
 </div>
+{% endif %}
+
+{% if request.user.is_authenticated %}
+<a href="{% url 'logout' %}">Logout</a>
+{% endif %}
