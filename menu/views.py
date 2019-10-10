@@ -61,8 +61,8 @@ class IndexView(generic.ListView):
         return IceCream.objects.all()
 
 @user_passes_test(is_superuser_check)
-def delete(request, icecream_id, menu_filter='home'):
-  ic = get_object_or_404(IceCream, pk=icecream_id)
+def delete(request, pk, menu_filter='home'):
+  ic = get_object_or_404(IceCream, pk=pk)
   ic.delete()
   return HttpResponseRedirect(reverse_lazy('menu:home',args=('home',)))
 

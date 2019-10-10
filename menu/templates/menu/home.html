@@ -20,14 +20,16 @@
         <li>
           <a href="{% url 'menu:detail' icecream.id %}">{{ icecream.flavor }}</a> 
           <a href="upvote/{{ icecream.id }}">+</a>{{ icecream.score }}<a href="downvote/{{ icecream.id }}">-</a>
+          {% if request.user.is_superuser %}
           (<a href="{% url 'menu:delete' icecream.id%}">x</a>)
+          {% endif %}
         </li>
     {% endfor %}
     </ul>
 {% else %}
     <p>No ice cream is available.</p>
 {% endif %}
-{% if is_superuser_check %}
+{% if request.user.is_authenticated %}
 <div>
   <a href="{% url 'menu:create' %}">Add a new flavor!</a> 
 </div>
